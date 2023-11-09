@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+{% set s=authors|length %}
+<h1>le nombre est: {{ s }}</h1>
+{% if authors is empty %}
+<h1>vide</h1>
+{% else %}
+<table border="1">
+    <th>id</th>
+    <th>picture</th>
+    <th>username</th>
+    <th>email</th>
+    <th>nb_books</th>
+    <th>detail</th>
+    {% for author in authors %}
+        <tr>
+            <td>{{author.id}}</td>
+            <td><img src="{{author.picture}}" alt=""/></td>
+            <td>{{author.username|upper}}</td>
+            <td>{{author.email}}</td>
+            <td>{{author.nb_books}}</td>
+            <td><a href="{{ path('app_details',{ 'id': author.id })}}">haha</a></td>
+        </tr>
+    {% endfor %}
+    {% endif %}
+</table>
+{% set total=0 %}
+{% for author in authors %}
+{% set total=total+author.nb_books %}
+{% endfor %}
+<h1>nombre de books : {{ total }}</h1>
+</body>
+</html>
