@@ -64,23 +64,27 @@ class AuthorController extends AbstractController
     }
 
     #[Route('/add', name: 'app_addNew')]
-    public function Add(Request $request):Response
-    {
-        $author=new Author();
-        $form=$this->CreateForm(AuthorType::class,$author);
-        $form->add('Ajouter',SubmitType::class);
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid())
+        public function Add(Request $request):Response
         {
-            $em=$this->getDoctrine()->getManager();
-            $em->persist($author);
-            $em->flush();
-            return $this->redirectToRoute("app_affiche");
+            $author=new Author();
+
+            $form=$this->CreateForm(AuthorType::class,$author);// Create a form using the AuthorType form class and associate it with the Author object
+            $form->add('Ajouter',SubmitType::class);// Add a "Ajouter" button of type SubmitType to the form
+            $form->handleRequest($request);// Handle the incoming HTTP request data with the form
+
+            if($form->isSubmitted() && $form->isValid()) // Check if the form was submitted and is valid
+            {
+                $em=$this->getDoctrine()->getManager();// Get the Doctrine entity manager
+
+                $em->persist($author);// to remember the Author entity and be prepared to save it to the database
+                $em->flush();// commit (save) the changes to the database
+
+                return $this->redirectToRoute("app_affiche"); //Redirect to the "app_affiche" route if the form submission was successful
+            }
+            return $this->render('/author/form.html.twig',
+                ["form"=>$form->createView(),
+                ]);
         }
-        return $this->render('/author/form.html.twig',
-            ["form"=>$form->createView(),
-            ]);
-    }
 
     #[Route('/affiche', name: 'app_affiche')]
     public function affichage(AuthorRepository $repository):Response
