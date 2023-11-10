@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div align="center">
+    <h1>List of Books</h1>
+    <table border="1">
+        {% if allBook is empty  %}
+            <h1>No Books Found !!</h1>
+        {% endif %}
+        <tr>
+            <th>Title</th>
+            <th>Publication date</th>
+            <th>Published</th>
+            <th>Category</th>
+            <th>Author</th>
+            <th>Actions</th>
+        </tr>
+            {% for b in book %}
+                    <tr>
+                        <td>{{b.title}}</td>
+                        <td>{{ b.publicationDate|date('Y-m-d')  }}</td>
+                        <td>{{ b.published }}</td>
+                        <td>{{ b.category }}</td>
+                        <td>{{ b.author }}</td>
+                        <td>
+                            <a href="{{path ('app_editBook',{"id": b.ref} ) }}">edit</a>
+                            <a href="{{path ('app_delBook',{"id": b.ref} ) }}">delete</a>
+                            <a href="{{path ('app_afficheBookDetails',{"id": b.ref} ) }}">show</a>
+                        </td>
+                    </tr>
+            {% endfor %}
+    </table>
+        <h3>number of published books : {{ book|length }}</h3> {#affichage de la longueur des books published#}
+        <h3>number of unpublished books : {{ unB|length }}</h3> {#affichage de la longueur des books unPublished#}
+    <button onclick="window.location='{{ path('app_add_book') }}'">Add New </button> {# rerender to add new book page #}
+</div>
+</body>
+</html>
